@@ -72,7 +72,7 @@ let getShuffle = (array) => {
     newArray[i] = newArray[j];
     newArray[j] = temp;
   }
-  return newArray.slice(getRandomArbitrary(1, array.length-1));
+  return newArray.slice(getRandomArbitrary(0, array.length-1));
 }
 
 const createPromo = () => {
