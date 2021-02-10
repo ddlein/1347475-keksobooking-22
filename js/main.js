@@ -65,13 +65,14 @@ let getRandomFixed = (min, max, decimal) => {
 }
 
 let getShuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
+  let newArray = array.slice();
+  for (let i = newArray.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
-    let temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+    let temp = newArray[i];
+    newArray[i] = newArray[j];
+    newArray[j] = temp;
   }
-  return array.slice(getRandomArbitrary(1, array.length-1))
+  return newArray.slice(getRandomArbitrary(1, array.length-1));
 }
 
 const createPromo = () => {
@@ -94,10 +95,8 @@ const createPromo = () => {
       guests: getRandomArbitrary(MIN_GUESTS, MAX_GUESTS),
       checkin: CHECKIN[getRandomArbitrary(0, CHECKIN.length - 1)],
       checkout: CHECKOUT[getRandomArbitrary(0, CHECKOUT.length - 1)],
-      // features: new Array(getRandomArbitrary(1, FEATURES.length - 1)).fill(null).map(() => getRandomFeatures(FEATURES)),
       features: getShuffle(FEATURES),
       description: 'Супер-предложение',
-      // photos: new Array(getRandomArbitrary(1, PHOTOS.length - 1)).fill(null).map(() => getRandomFeatures(PHOTOS)),
       photos: getShuffle(PHOTOS),
     },
     location: {
