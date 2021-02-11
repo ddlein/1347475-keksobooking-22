@@ -100,4 +100,5 @@ const similarPromo = new Array(SIMILAR_PROMO_COUNT).fill(null).map(() => createP
 
 similarPromo
 
-export {similarPromo}
+// export {similarPromo}
+// console.log(similarPromo);

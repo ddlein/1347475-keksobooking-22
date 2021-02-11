@@ -1,6 +1,3 @@
-// import './util.js';
-import {similarPromo} from './data.js';
+import './data.js';
 
-similarPromo
 
-// console.log(similarPromo);
