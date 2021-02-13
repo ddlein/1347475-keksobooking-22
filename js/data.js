@@ -1,21 +1,8 @@
-import {getRandomArbitrary, getRandomFixed} from './util.js';
+import { getRandomArbitrary, getRandomFixed } from './util.js';
 
-const TYPE = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-];
-const CHECKIN = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
-const CHECKOUT = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
+const TYPE = ['palace', 'flat', 'house', 'bungalow'];
+const CHECKIN = ['12:00', '13:00', '14:00'];
+const CHECKOUT = ['12:00', '13:00', '14:00'];
 const FEATURES = [
   'wifi',
   'dishwasher',
@@ -39,16 +26,13 @@ const MAX_ROOMS = 4;
 const MIN_GUESTS = 1;
 const MAX_GUESTS = 4;
 
-const FROM_X = 35.65000;
-const TO_X = 35.70000;
+const FROM_X = 35.65;
+const TO_X = 35.7;
 
-const FROM_Y = 139.70000;
-const TO_Y = 139.80000;
+const FROM_Y = 139.7;
+const TO_Y = 139.8;
 const DECIMAL = 5;
 const SIMILAR_PROMO_COUNT = 10;
-
-
-
 
 let getShuffle = (array) => {
   let newArray = array.slice();
@@ -58,8 +42,8 @@ let getShuffle = (array) => {
     newArray[i] = newArray[j];
     newArray[j] = temp;
   }
-  return newArray.slice(getRandomArbitrary(0, array.length-1));
-}
+  return newArray.slice(getRandomArbitrary(0, array.length - 1));
+};
 
 const createPromo = () => {
   let valueX = getRandomFixed(FROM_X, TO_X, DECIMAL);
@@ -89,16 +73,14 @@ const createPromo = () => {
       x: valueX,
       y: valueY,
     },
-  }
-}
+  };
+};
 
+const similarPromo = new Array(SIMILAR_PROMO_COUNT)
+  .fill(null)
+  .map(() => createPromo());
 
+similarPromo;
 
-
-const similarPromo = new Array(SIMILAR_PROMO_COUNT).fill(null).map(() => createPromo())
-
-
-similarPromo
-
-// export {similarPromo}
+export { similarPromo };
 // console.log(similarPromo);
