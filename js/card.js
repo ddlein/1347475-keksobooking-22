@@ -1,7 +1,6 @@
 import {similarPromo} from './data.js';
 
 // console.log(similarPromo);
-// console.log(createPromo);
 
 const similarListElement = document.querySelector('.map__canvas');
 const similarPromoTemplate = document.querySelector('#card').content.querySelector('.popup');
