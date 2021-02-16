@@ -1,4 +1,4 @@
-import { getRandomArbitrary, getRandomFixed } from './util.js';
+import {getRandomArbitrary, getRandomFixed} from './util.js';
 
 const TYPE = ['palace', 'flat', 'house', 'bungalow'];
 const CHECKIN = ['12:00', '13:00', '14:00'];
@@ -82,5 +82,5 @@ const similarPromo = new Array(SIMILAR_PROMO_COUNT)
 
 similarPromo;
 
-export { similarPromo };
+export {similarPromo};
 // console.log(similarPromo);

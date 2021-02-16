@@ -1,4 +1,4 @@
-import {similarPromo} from './data.js';
+import { similarPromo } from './data.js';
 
 // console.log(similarPromo);
 
@@ -17,7 +17,7 @@ const getOfferType = (promoType) => {
       return 'Дворец';
   }
 }
-
+let fragment = document.createDocumentFragment();
 similarPromo.forEach((promo) => {
   const promoElement = similarPromoTemplate.cloneNode(true);
   promoElement.querySelector('.popup__title').textContent = promo.offer.title;
@@ -54,5 +54,8 @@ similarPromo.forEach((promo) => {
 
 
   promoElement.querySelector('.popup__avatar').src = promo.author.avatar
-  similarListElement.appendChild(promoElement);
+  // similarListElement.appendChild(promoElement);
+  fragment.appendChild(promoElement)
 });
+
+similarListElement.appendChild(fragment.children[1])
