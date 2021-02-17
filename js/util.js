@@ -18,4 +18,4 @@ let getRandomFixed = (min, max, decimal) => {
   }
 };
 
-export { getRandomArbitrary, getRandomFixed };
+export {getRandomArbitrary, getRandomFixed};
