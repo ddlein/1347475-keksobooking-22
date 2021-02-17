@@ -4,7 +4,7 @@ const TYPE = document.querySelector('#type');
 const PRICE = document.querySelector('#price');
 
 const priceType  = {
-  bungalow: 20,
+  bungalow: 0,
   flat: 1000,
   house: 5000,
   palace: 10000,
@@ -14,7 +14,6 @@ const priceType  = {
 TYPE.addEventListener('change', () => {
   PRICE.placeholder = priceType[TYPE.value]
   PRICE.min = priceType[TYPE.value]
-  PRICE.value = '';
 })
 
 
