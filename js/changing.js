@@ -3,31 +3,19 @@ const CHECKOUT = document.querySelector('#timeout');
 const TYPE = document.querySelector('#type');
 const PRICE = document.querySelector('#price');
 
+const priceType  = {
+  bungalow: 20,
+  flat: 1000,
+  house: 5000,
+  palace: 10000,
+}
 
-PRICE.setAttribute('min', PRICE.placeholder)
-PRICE.placeholder = 1000;
+
 TYPE.addEventListener('change', () => {
-  switch (TYPE.value) {
-    case 'bungalow':
-      PRICE.placeholder = 20;
-      PRICE.setAttribute('min', 20)
-      break;
-    case 'flat':
-      PRICE.placeholder = 1000;
-      PRICE.setAttribute('min', 1000)
-      break;
-    case 'house':
-      PRICE.placeholder = 5000;
-      PRICE.setAttribute('min', 5000);
-      break
-    case 'palace':
-      PRICE.placeholder = 10000;
-      PRICE.setAttribute('min', 10000);
-      break;
-  }
+  PRICE.placeholder = priceType[TYPE.value]
+  PRICE.min = priceType[TYPE.value]
   PRICE.value = '';
 })
-
 
 
 CHECKIN.addEventListener('change', () => {
