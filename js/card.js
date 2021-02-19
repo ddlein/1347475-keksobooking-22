@@ -58,4 +58,6 @@ similarPromo.forEach((promo) => {
   fragment.appendChild(promoElement)
 });
 
-similarListElement.appendChild(fragment.children[1])
+// similarListElement.appendChild(fragment.children[1])
+console.log(similarPromo);
+export {similarPromo}
