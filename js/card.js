@@ -2,7 +2,7 @@ import { similarPromo } from './data.js';
 
 // console.log(similarPromo);
 
-const similarListElement = document.querySelector('.map__canvas');
+// const similarListElement = document.querySelector('.map__canvas');
 const similarPromoTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const getOfferType = (promoType) => {
@@ -59,5 +59,6 @@ similarPromo.forEach((promo) => {
 });
 
 // similarListElement.appendChild(fragment.children[1])
-console.log(similarPromo);
-export {similarPromo}
+
+// console.log(similarPromo);
+export {similarPromo, similarPromoTemplate, getOfferType}
