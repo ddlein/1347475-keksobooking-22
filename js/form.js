@@ -20,7 +20,6 @@ const getDisabled = (isDisabled) => {
 
 
   FORM_ELEMENT.forEach((fieldset) => {
-    // console.log(elem);
     fieldset.disabled = isDisabled
   })
 
@@ -31,7 +30,6 @@ const getDisabled = (isDisabled) => {
 }
 
 getDisabled(true)
-// console.log('blocked');
 
 
 

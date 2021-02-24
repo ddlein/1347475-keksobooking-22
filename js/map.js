@@ -7,10 +7,15 @@ import {fillSimilarPromo} from './data.js';
 const LAT = 35.681700;
 const LNG = 139.75388;
 const SCALE = 12;
-const MAIN_PIN_WIDTH = 52;
-const PIN_WIDTH = 40;
-let getLanLng = 0;
-const SIMILAR_PROMO = fillSimilarPromo();
+const MAIN_PIN = {
+  width: 52,
+  height: 52,
+}
+
+const PIN = {
+  width: 40,
+  height: 40,
+}
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -31,8 +36,8 @@ L.tileLayer(
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
-  iconSize: [MAIN_PIN_WIDTH, MAIN_PIN_WIDTH],
-  iconAnchor: [MAIN_PIN_WIDTH / 2, MAIN_PIN_WIDTH],
+  iconSize: [MAIN_PIN.width, MAIN_PIN.height],
+  iconAnchor: [MAIN_PIN.width / 2, MAIN_PIN.height],
 } );
 
 const mainPinMarker = L.marker({
@@ -47,28 +52,18 @@ mainPinMarker.addTo(map);
 
 
 mainPinMarker.on('moveend', (evt) => {
-  getLanLng = evt.target.getLatLng()
+  let getLanLng = evt.target.getLatLng();
   ADDRESS.value = `${getLanLng.lat.toFixed(5)}, ${getLanLng.lng.toFixed(5)}`;
 });
 
-
-// similarPromo.forEach(({location}) => {
-//   const pinMarker = L.marker({
-//     lat: location.x,
-//     lng: location.y,
-//   })
-//   pinMarker.addTo(map)
-// })
+let similarPromo = fillSimilarPromo();
 
 
-
-// console.log(createCustomPopup(similarPromo[0]));
-
-SIMILAR_PROMO.forEach((promo) => {
+similarPromo.forEach((promo) => {
   const pinMarkerIcon = L.icon({
     iconUrl: '../img/pin.svg',
-    iconSize: [PIN_WIDTH, PIN_WIDTH],
-    iconAnchor: [PIN_WIDTH / 2, PIN_WIDTH],
+    iconSize: [PIN.width, PIN.height],
+    iconAnchor: [PIN.width / 2, PIN.height],
   });
 
   const pinMarker = L.marker({
