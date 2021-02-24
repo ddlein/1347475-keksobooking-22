@@ -76,11 +76,14 @@ const createPromo = () => {
   };
 };
 
-const similarPromo = new Array(SIMILAR_PROMO_COUNT)
-  .fill(null)
-  .map(() => createPromo());
+// const similarPromo = new Array(SIMILAR_PROMO_COUNT)
+//   .fill(null)
+//   .map(() => createPromo());
 
-similarPromo;
+const fillSimilarPromo = () => {
+  return new Array(SIMILAR_PROMO_COUNT).fill(null).map(() => createPromo());
+}
 
-export {similarPromo};
+
+export {fillSimilarPromo};
 // console.log(similarPromo);
