@@ -18,13 +18,16 @@ const getDisabled = (isDisabled) => {
     MAP_FILTERS.classList.remove('ad-form--disabled');
   }
 
-  for (let i = 0; i < FORM_ELEMENT.length; i++) {
-    FORM_ELEMENT[i].disabled = isDisabled
-  }
 
-  for (let i = 0; i < MAP_FILTER_SETTING.length; i++) {
-    MAP_FILTER_SETTING[i].disabled = isDisabled
-  }
+  FORM_ELEMENT.forEach((fieldset) => {
+    // console.log(elem);
+    fieldset.disabled = isDisabled
+  })
+
+
+  MAP_FILTER_SETTING.forEach((mapFilter) => {
+    mapFilter.disabled = isDisabled
+  })
 }
 
 getDisabled(true)
