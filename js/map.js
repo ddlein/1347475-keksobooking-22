@@ -72,7 +72,7 @@ similarPromo.forEach((promo) => {
     lat: promo.location.x,
     lng: promo.location.y,
   }, {
-    draggable: true,
+    draggable: false,
     icon: pinMarkerIcon,
   } );
 
