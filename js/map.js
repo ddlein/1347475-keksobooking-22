@@ -10,11 +10,13 @@ const SCALE = 12;
 const MAIN_PIN = {
   width: 52,
   height: 52,
+  icon: '../img/main-pin.svg',
 }
 
 const PIN = {
   width: 40,
   height: 40,
+  icon: '../img/pin.svg',
 }
 
 const map = L.map('map-canvas')
@@ -35,7 +37,7 @@ L.tileLayer(
 ).addTo(map);
 
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
+  iconUrl: MAIN_PIN.icon,
   iconSize: [MAIN_PIN.width, MAIN_PIN.height],
   iconAnchor: [MAIN_PIN.width / 2, MAIN_PIN.height],
 } );
@@ -61,7 +63,7 @@ let similarPromo = fillSimilarPromo();
 
 similarPromo.forEach((promo) => {
   const pinMarkerIcon = L.icon({
-    iconUrl: '../img/pin.svg',
+    iconUrl: PIN.icon,
     iconSize: [PIN.width, PIN.height],
     iconAnchor: [PIN.width / 2, PIN.height],
   });
