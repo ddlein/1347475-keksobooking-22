@@ -31,9 +31,6 @@ const getDisabled = (isDisabled) => {
 
 getDisabled(true)
 
-
-
-
 const priceType = {
   bungalow: 0,
   flat: 1000,
@@ -55,5 +52,42 @@ CHECKIN.addEventListener('change', () => {
 CHECKOUT.addEventListener('change', () => {
   CHECKIN.value = CHECKOUT.value;
 });
+
+const ROOM_NUMBER = document.querySelector('#room_number');
+// const ROOM_OPTION = ROOM_NUMBER.querySelectorAll('option');
+const GUESTS = document.querySelector('#capacity');
+const GUESTS_OPTION = GUESTS.querySelectorAll('option');
+
+// console.log(ROOM_OPTION);
+
+
+
+GUESTS_OPTION.forEach((elem) => {
+  if (ROOM_NUMBER.value < elem.value) {
+    elem.disabled = true;
+  } if (elem.value < ROOM_NUMBER.value) {
+    elem.disabled = true
+  }
+})
+
+ROOM_NUMBER.addEventListener('change', () => {
+  // console.log(typeof(Number(ROOM_NUMBER.value)));
+  GUESTS_OPTION.forEach((el) => {
+    if (Number(ROOM_NUMBER.value) >= Number(el.value) &&  Number(el.value) !== 0 && Number(ROOM_NUMBER.value) !== 100)  {
+      el.disabled = false;
+    }
+
+    else if (Number(ROOM_NUMBER.value) === 100 && Number(el.value) === 0) {
+      el.disabled = false
+    } else {
+      el.disabled = true
+    }
+
+  })
+})
+
+
+
+
 
 export {getDisabled, ADDRESS};
