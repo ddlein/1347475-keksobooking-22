@@ -1,3 +1,6 @@
+import {sendData} from './api.js';
+//import {cleanMap} from './map.js';
+
 const CHECKIN = document.querySelector('#timein');
 const CHECKOUT = document.querySelector('#timeout');
 const TYPE = document.querySelector('#type');
@@ -12,7 +15,7 @@ const ROOM_NUMBER = document.querySelector('#room_number');
 const GUESTS = document.querySelector('#capacity');
 // const GUESTS_OPTION = GUESTS.querySelectorAll('option');
 
-
+// Разблокировка/блокировка фильтров
 const getDisabled = (isDisabled) => {
 
   if (isDisabled) {
@@ -43,50 +46,24 @@ const priceType = {
   palace: 10000,
 }
 
-
+// Событие изменения цены при изменении типа жилья
 TYPE.addEventListener('change', () => {
   PRICE.placeholder = priceType[TYPE.value]
   PRICE.min = priceType[TYPE.value]
 })
 
-
+// Событие синхронизации времени выезда и заезда
 CHECKIN.addEventListener('change', () => {
   CHECKOUT.value = CHECKIN.value;
 });
 
+// Событие синхронизации времени выезда и заезда
 CHECKOUT.addEventListener('change', () => {
   CHECKIN.value = CHECKOUT.value;
 });
 
 
-// console.log(ROOM_OPTION);
-
-
-
-// GUESTS_OPTION.forEach((elem) => {
-//   if (ROOM_NUMBER.value < elem.value) {
-//     elem.disabled = true;
-//   } if (elem.value < ROOM_NUMBER.value) {
-//     elem.disabled = true
-//   }
-// })
-
-// ROOM_NUMBER.addEventListener('change', () => {
-//   // console.log(typeof(Number(ROOM_NUMBER.value)));
-//   GUESTS_OPTION.forEach((el) => {
-//     if (Number(ROOM_NUMBER.value) >= Number(el.value) &&  Number(el.value) !== 0 && Number(ROOM_NUMBER.value) !== 100)  {
-//       el.disabled = false;
-//     }
-
-//     else if (Number(ROOM_NUMBER.value) === 100 && Number(el.value) === 0) {
-//       el.disabled = false
-//     } else {
-//       el.disabled = true
-//     }
-
-//   })
-// })
-
+// Функция оповещения пользователя при выборе кол-ва комнат
 let checkNumberOfGuestsAndRooms = () => {
   let roomsValue = Number(ROOM_NUMBER.value);
   let guestsValue = Number(GUESTS.value);
@@ -102,17 +79,56 @@ let checkNumberOfGuestsAndRooms = () => {
   }
 }
 
+// Событие при котором срабатывает функция оповещения при смене кол-ва гостей
 GUESTS.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
-
+// Событие при котором срабатывает функция оповещения при смене кол-ва комнат
 ROOM_NUMBER.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
 
+const cleanForm = () => {
+  const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
+  CLEAN_BUTTON.click();
+  //cleanMap()
+}
+
+const successSubmit = () => {
+  cleanForm()
+  const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success');
+  const CREATE_SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
+  // TODO разместить сообщение надо в main
+  document.body.append(CREATE_SUCCESS)
+  // return CREATE_SUCCESS
+}
+
+const errorSubmit = () => {
+  const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error');
+  const CREATE_ERROR = TEMPLATE_ERROR.cloneNode(true);
+  // TODO разместить сообщение надо в main
+  document.body.append(CREATE_ERROR);
+}
 
 
 
+const formSubmit = document.querySelector('.ad-form');
 
 
-export {getDisabled, ADDRESS};
+
+const setUserFormSubmit = (onSuccess) => {
+  formSubmit.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    // console.log(formData);
+
+    sendData(
+      () => successSubmit(onSuccess()),
+      () => errorSubmit(),
+      new FormData(evt.target),
+    );
+
+  })
+}
+
+
+export { getDisabled, ADDRESS, setUserFormSubmit };

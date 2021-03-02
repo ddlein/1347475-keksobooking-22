@@ -1,7 +1,6 @@
-
-
 const similarPromoTemplate = document.querySelector('#card').content.querySelector('.popup');
 
+// Условие на тпп жилья
 const getOfferType = (promoType) => {
   switch (promoType) {
     case 'flat':
@@ -16,7 +15,7 @@ const getOfferType = (promoType) => {
 }
 
 
-
+// Функция создания одного Объявления с данными по типу шаблона в HTML (template)
 const createCustomPopup = (promo) => {
   const promoElement = similarPromoTemplate.cloneNode(true);
   promoElement.querySelector('.popup__title').textContent = promo.offer.title;
@@ -60,7 +59,4 @@ const createCustomPopup = (promo) => {
   return promoElement;
 }
 
-// similarListElement.appendChild(fragment.children[1])
-
-// console.log(similarPromo);
 export {createCustomPopup}
