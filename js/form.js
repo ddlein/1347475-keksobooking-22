@@ -1,4 +1,4 @@
-import {sendData} from './api.js';
+import { sendData } from './api.js';
 //import {cleanMap} from './map.js';
 
 const CHECKIN = document.querySelector('#timein');
@@ -13,7 +13,15 @@ const ADDRESS = document.querySelector('#address');
 const ROOM_NUMBER = document.querySelector('#room_number');
 // const ROOM_OPTION = ROOM_NUMBER.querySelectorAll('option');
 const GUESTS = document.querySelector('#capacity');
-// const GUESTS_OPTION = GUESTS.querySelectorAll('option');
+const MAIN = document.querySelector('main');
+const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
+const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success');
+const CREATE_SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
+const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error');
+const CREATE_ERROR = TEMPLATE_ERROR.cloneNode(true);
+
+
+
 
 // Разблокировка/блокировка фильтров
 const getDisabled = (isDisabled) => {
@@ -88,41 +96,60 @@ ROOM_NUMBER.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
 
-const cleanForm = () => {
-  const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
-  CLEAN_BUTTON.click();
-  //cleanMap()
-}
+// const cleanForm = (onSuccess) => {
+//   CLEAN_BUTTON.click();
+//   onSuccess()
+// }
 
-const successSubmit = () => {
-  cleanForm()
-  const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success');
-  const CREATE_SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
-  // TODO разместить сообщение надо в main
-  document.body.append(CREATE_SUCCESS)
+const successSubmit = (onSuccess) => {
+  //cleanForm(onSuccess)
+  //
+  MAIN.append(CREATE_SUCCESS)
   // return CREATE_SUCCESS
+  onSuccess()
 }
 
 const errorSubmit = () => {
-  const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error');
-  const CREATE_ERROR = TEMPLATE_ERROR.cloneNode(true);
-  // TODO разместить сообщение надо в main
-  document.body.append(CREATE_ERROR);
+  MAIN.append(CREATE_ERROR);
 }
 
 
 
 const formSubmit = document.querySelector('.ad-form');
 
+const formClean = (clean) => {
+  CLEAN_BUTTON.addEventListener('click', (evt) => {
+    evt.preventDefault()
+    clean()
+  })
+}
+
+window.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('success')) {
+    CREATE_SUCCESS.style.display = 'none';
+  }
+  if (evt.target.classList.contains('error')) {
+    CREATE_ERROR.style.display = 'none';
+  }
+})
+
+window.addEventListener('keydown', (evt) => {
+  if (evt.keyCode === 27) {
+    CREATE_ERROR.style.display = 'none';
+    CREATE_SUCCESS.style.display = 'none';
+  }
+})
+
+
 
 
 const setUserFormSubmit = (onSuccess) => {
   formSubmit.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    // console.log(formData);
+    //console.log(new FormData(evt.target));
 
     sendData(
-      () => successSubmit(onSuccess()),
+      () => successSubmit(onSuccess),
       () => errorSubmit(),
       new FormData(evt.target),
     );
@@ -131,4 +158,4 @@ const setUserFormSubmit = (onSuccess) => {
 }
 
 
-export { getDisabled, ADDRESS, setUserFormSubmit };
+export { getDisabled, ADDRESS, setUserFormSubmit, formClean, CHECKIN, CHECKOUT, PRICE, TYPE, ROOM_NUMBER, GUESTS };

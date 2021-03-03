@@ -1,5 +1,5 @@
 /* global L:readonly */
-import { getDisabled, ADDRESS } from './form.js';
+import { getDisabled, ADDRESS, CHECKIN, CHECKOUT, PRICE, TYPE, ROOM_NUMBER, GUESTS } from './form.js';
 import { createCustomPopup } from './card.js';
 // import {
 //   fillSimilarPromo
@@ -65,9 +65,23 @@ mainPinMarker.on('moveend', (evt) => {
 
 const cleanMap = () => {
   let newLatLng = new L.LatLng(LAT, LNG);
-  mainPinMarker.setLatLng(newLatLng);
   ADDRESS.value = `${LAT}, ${LNG}`;
-  console.log(`${LAT}, ${LNG}`)
+  mainPinMarker.setLatLng(newLatLng);
+  const TITLE_INPUT = document.querySelector('#title');
+  const DESCRIPTION_INPUT = document.querySelector('#description');
+  DESCRIPTION_INPUT.value = '';
+  TITLE_INPUT.value = '';
+  CHECKIN.value = '12:00';
+  CHECKOUT.value = '12:00';
+  PRICE.value = '';
+  PRICE.placeholder = '1000'
+  TYPE.value = 'flat';
+  const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
+  for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
+    FEATURES_CHECKBOX[i].checked = false;
+  }
+  ROOM_NUMBER.value = '1';
+  GUESTS.value = '1';
 }
 
 const createMakePin = (array) => {

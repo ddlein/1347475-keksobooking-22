@@ -17,16 +17,16 @@ const getData = (onSuccess, onError) => {
     })
 }
 
-const sendData = (onSuccess, onFail, body) => {
+const sendData = (onSuccessSubmit, onFail, body) => {
   fetch(
-    ' https://22.javascript.pages.academy/keksobooking', {
+    'https://22.javascript.pages.academy/keksobooking', {
       method: 'POST',
       body,
     },
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess();
+        onSuccessSubmit();
       } else {
         onFail();
       }
