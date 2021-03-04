@@ -15,10 +15,11 @@ const ROOM_NUMBER = document.querySelector('#room_number');
 const GUESTS = document.querySelector('#capacity');
 const MAIN = document.querySelector('main');
 const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
-const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success');
-const CREATE_SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
-const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error');
-const CREATE_ERROR = TEMPLATE_ERROR.cloneNode(true);
+const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+// const SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
+const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+// const ERROR = TEMPLATE_ERROR.cloneNode(true);
+
 
 
 
@@ -96,49 +97,88 @@ ROOM_NUMBER.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
 
-// const cleanForm = (onSuccess) => {
-//   CLEAN_BUTTON.click();
-//   onSuccess()
-// }
+
+const cleanForm = () => {
+  const TITLE_INPUT = document.querySelector('#title');
+  const DESCRIPTION_INPUT = document.querySelector('#description');
+  DESCRIPTION_INPUT.value = '';
+  TITLE_INPUT.value = '';
+  CHECKIN.value = '12:00';
+  CHECKOUT.value = '12:00';
+  PRICE.value = '';
+  PRICE.placeholder = '1000'
+  TYPE.value = 'flat';
+  const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
+  for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
+    FEATURES_CHECKBOX[i].checked = false;
+  }
+  ROOM_NUMBER.value = '1';
+  GUESTS.value = '1';
+}
 
 const successSubmit = (onSuccess) => {
   //cleanForm(onSuccess)
   //
-  MAIN.append(CREATE_SUCCESS)
-  // return CREATE_SUCCESS
+  MAIN.append(TEMPLATE_SUCCESS)
+  // return SUCCESS
   onSuccess()
+  cleanForm()
+}
+
+let errorButton = document.querySelector('.error__button');
+
+
+const x = () => {
+  errorButton.addEventListener('click', () => {
+    TEMPLATE_ERROR.remove()
+  })
 }
 
 const errorSubmit = () => {
-  MAIN.append(CREATE_ERROR);
+  MAIN.append(TEMPLATE_ERROR);
+  errorButton = document.querySelector('.error__button');
+  x()
 }
 
 
 
 const formSubmit = document.querySelector('.ad-form');
 
-const formClean = (clean) => {
+const setUserFormClean = (clean) => {
   CLEAN_BUTTON.addEventListener('click', (evt) => {
-    evt.preventDefault()
-    clean()
+    evt.preventDefault();
+    clean();
+    cleanForm();
   })
 }
 
+
+
 window.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('success')) {
-    CREATE_SUCCESS.style.display = 'none';
+    TEMPLATE_SUCCESS.remove();
   }
   if (evt.target.classList.contains('error')) {
-    CREATE_ERROR.style.display = 'none';
+    TEMPLATE_ERROR.remove()
   }
 })
 
 window.addEventListener('keydown', (evt) => {
   if (evt.keyCode === 27) {
-    CREATE_ERROR.style.display = 'none';
-    CREATE_SUCCESS.style.display = 'none';
+    TEMPLATE_ERROR.remove()
+    TEMPLATE_SUCCESS.remove()
   }
 })
+
+// errorButton.addEventListener('click', () => {
+//   ERROR.remove()
+// })
+
+
+
+
+
+
 
 
 
@@ -158,4 +198,6 @@ const setUserFormSubmit = (onSuccess) => {
 }
 
 
-export { getDisabled, ADDRESS, setUserFormSubmit, formClean, CHECKIN, CHECKOUT, PRICE, TYPE, ROOM_NUMBER, GUESTS };
+
+
+export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, x };

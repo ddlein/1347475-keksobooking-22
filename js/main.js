@@ -3,11 +3,12 @@ import './card.js';
 import './form.js';
 import './map.js';
 import {getData} from './api.js';
-import {createMakePin, showError, cleanMap} from './map.js';
-import {setUserFormSubmit, formClean} from './form.js'
+import {createPin, cleanMap} from './map.js';
+import {setUserFormSubmit, setUserFormClean} from './form.js';
+import {showError} from './util.js';
 
-getData(createMakePin, showError)
+getData(createPin, showError)
 
 setUserFormSubmit(cleanMap)
 
-formClean(cleanMap)
+setUserFormClean(cleanMap)

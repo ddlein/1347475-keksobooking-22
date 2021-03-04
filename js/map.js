@@ -1,5 +1,5 @@
 /* global L:readonly */
-import { getDisabled, ADDRESS, CHECKIN, CHECKOUT, PRICE, TYPE, ROOM_NUMBER, GUESTS } from './form.js';
+import { getDisabled, ADDRESS} from './form.js';
 import { createCustomPopup } from './card.js';
 // import {
 //   fillSimilarPromo
@@ -67,24 +67,9 @@ const cleanMap = () => {
   let newLatLng = new L.LatLng(LAT, LNG);
   ADDRESS.value = `${LAT}, ${LNG}`;
   mainPinMarker.setLatLng(newLatLng);
-  const TITLE_INPUT = document.querySelector('#title');
-  const DESCRIPTION_INPUT = document.querySelector('#description');
-  DESCRIPTION_INPUT.value = '';
-  TITLE_INPUT.value = '';
-  CHECKIN.value = '12:00';
-  CHECKOUT.value = '12:00';
-  PRICE.value = '';
-  PRICE.placeholder = '1000'
-  TYPE.value = 'flat';
-  const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
-  for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
-    FEATURES_CHECKBOX[i].checked = false;
-  }
-  ROOM_NUMBER.value = '1';
-  GUESTS.value = '1';
 }
 
-const createMakePin = (array) => {
+const createPin = (array) => {
   array.forEach((promo) => {
     const pinMarkerIcon = L.icon({
       iconUrl: PIN.icon,
@@ -108,69 +93,7 @@ const createMakePin = (array) => {
   });
 }
 
-const showError = (error) => {
 
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 1000;
-  alertContainer.style.position = 'fixed';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
-
-  alertContainer.textContent = error;
-
-  document.body.append(alertContainer);
-
-  setTimeout(() => {
-    alertContainer.remove();
-  }, 5000);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-// console.log(successSubmit());
-// const formSubmit = document.querySelector('.ad-form');
-
-
-// formSubmit.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
-//   const formData = new FormData(evt.target)
-//   // console.log(formData);
-//   fetch(
-//     ' https://22.javascript.pages.academy/keksobooking', {
-//       method: 'POST',
-//       body: formData,
-//     },
-//   )
-//     .then((response) => {
-//       if (response.ok) {
-//         cleanForm()
-//         // console.log(formData);
-//         successSubmit()
-//       } else {
-//         errorSubmit()
-//       }
-//     })
-//     .catch(() => {
-//       // console.log(err);
-//       errorSubmit()
-//     })
-// })
-
-export{createMakePin, showError, cleanMap}
+export{createPin, cleanMap}
 
 
