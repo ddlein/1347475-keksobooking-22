@@ -114,9 +114,12 @@ const cleanForm = () => {
   PRICE.placeholder = '1000'
   TYPE.value = 'flat';
   const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
-  for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
-    FEATURES_CHECKBOX[i].checked = false;
-  }
+  // for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
+  //   FEATURES_CHECKBOX[i].checked = false;
+  // }
+  FEATURES_CHECKBOX.forEach((element) => {
+    element.checked = false
+  })
   ROOM_NUMBER.value = '1';
   GUESTS.value = '1';
 }
@@ -128,22 +131,53 @@ const cleanForm = () => {
 const successSubmit = (onSuccess) => {
   MAIN.append(TEMPLATE_SUCCESS)
   onSuccess()
+
+  window.addEventListener('click', () => {
+    TEMPLATE_SUCCESS.remove();
+  })
+
+
+  window.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === 27) {
+      TEMPLATE_SUCCESS.remove()
+    }
+  })
   // cleanForm()
+  window.removeEventListener('click', () => {})
+  window.removeEventListener('keydown', () => {})
+
 }
 
 
 
+//Удаление при клике кнопки вызванного сообщения об ошибке
 const deleteErrorPopup = () => {
   let errorButton = document.querySelector('.error__button');
   errorButton.addEventListener('click', () => {
     TEMPLATE_ERROR.remove()
   })
+  errorButton.removeEventListener('click', () => {})
 }
 
+//Добавление затемнения при ошибке + слушатели для закрытия затемнения
 const errorSubmit = () => {
   MAIN.append(TEMPLATE_ERROR);
   // errorButton = document.querySelector('.error__button');
   deleteErrorPopup()
+
+  window.addEventListener('click', () => {
+    TEMPLATE_ERROR.remove()
+  })
+
+  window.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === 27) {
+      TEMPLATE_ERROR.remove()
+    }
+  })
+
+  window.removeEventListener('click', () => {})
+  window.removeEventListener('keydown', () => {})
+
 }
 
 
@@ -160,26 +194,38 @@ const setUserFormClean = (clean) => {
 
 
 
-
-window.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('success')) {
-    TEMPLATE_SUCCESS.remove();
-  }
-  if (evt.target.classList.contains('error')) {
-    TEMPLATE_ERROR.remove()
-  }
-})
-
-window.addEventListener('keydown', (evt) => {
-  if (evt.keyCode === 27) {
-    TEMPLATE_ERROR.remove()
-    TEMPLATE_SUCCESS.remove()
-  }
-})
-
-// errorButton.addEventListener('click', () => {
-//   ERROR.remove()
+// window.addEventListener('click', (evt) => {
+//   if (evt.target.classList.contains('success')) {
+//     TEMPLATE_SUCCESS.remove();
+//   }
+//   if (evt.target.classList.contains('error')) {
+//     TEMPLATE_ERROR.remove()
+//   }
 // })
+
+// window.addEventListener('keydown', (evt) => {
+//   if (evt.keyCode === 27) {
+//     TEMPLATE_ERROR.remove()
+//     TEMPLATE_SUCCESS.remove()
+//   }
+// })
+
+// window.removeEventListener('click', (evt) => {
+//   if (evt.target.classList.contains('success')) {
+//     TEMPLATE_SUCCESS.remove();
+//   }
+//   if (evt.target.classList.contains('error')) {
+//     TEMPLATE_ERROR.remove()
+//   }
+// })
+
+// window.removeEventListener('keydown', (evt) => {
+//   if (evt.keyCode === 27) {
+//     TEMPLATE_ERROR.remove()
+//     TEMPLATE_SUCCESS.remove()
+//   }
+// })
+
 
 
 const setUserFormSubmit = (onSuccess) => {
@@ -199,4 +245,4 @@ const setUserFormSubmit = (onSuccess) => {
 
 
 
-export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, deleteErrorPopup, cleanForm };
+export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, cleanForm };
