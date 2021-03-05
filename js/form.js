@@ -1,4 +1,5 @@
 import { sendData } from './api.js';
+// import { cleanMap } from './map.js';
 //import {cleanMap} from './map.js';
 
 const CHECKIN = document.querySelector('#timein');
@@ -18,6 +19,8 @@ const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
 const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 // const SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
 const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const FORM_SUBMIT = document.querySelector('.ad-form');
+
 // const ERROR = TEMPLATE_ERROR.cloneNode(true);
 
 
@@ -98,6 +101,8 @@ ROOM_NUMBER.addEventListener('change', () => {
 })
 
 
+
+
 const cleanForm = () => {
   const TITLE_INPUT = document.querySelector('#title');
   const DESCRIPTION_INPUT = document.querySelector('#description');
@@ -116,19 +121,20 @@ const cleanForm = () => {
   GUESTS.value = '1';
 }
 
+
+
+
+
 const successSubmit = (onSuccess) => {
-  //cleanForm(onSuccess)
-  //
   MAIN.append(TEMPLATE_SUCCESS)
-  // return SUCCESS
   onSuccess()
-  cleanForm()
+  // cleanForm()
 }
 
-let errorButton = document.querySelector('.error__button');
 
 
-const x = () => {
+const deleteErrorPopup = () => {
+  let errorButton = document.querySelector('.error__button');
   errorButton.addEventListener('click', () => {
     TEMPLATE_ERROR.remove()
   })
@@ -136,21 +142,22 @@ const x = () => {
 
 const errorSubmit = () => {
   MAIN.append(TEMPLATE_ERROR);
-  errorButton = document.querySelector('.error__button');
-  x()
+  // errorButton = document.querySelector('.error__button');
+  deleteErrorPopup()
 }
 
 
 
-const formSubmit = document.querySelector('.ad-form');
 
 const setUserFormClean = (clean) => {
   CLEAN_BUTTON.addEventListener('click', (evt) => {
     evt.preventDefault();
     clean();
-    cleanForm();
+    // cleanForm();
   })
 }
+
+
 
 
 
@@ -175,16 +182,8 @@ window.addEventListener('keydown', (evt) => {
 // })
 
 
-
-
-
-
-
-
-
-
 const setUserFormSubmit = (onSuccess) => {
-  formSubmit.addEventListener('submit', (evt) => {
+  FORM_SUBMIT.addEventListener('submit', (evt) => {
     evt.preventDefault();
     //console.log(new FormData(evt.target));
 
@@ -200,4 +199,4 @@ const setUserFormSubmit = (onSuccess) => {
 
 
 
-export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, x };
+export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, deleteErrorPopup, cleanForm };

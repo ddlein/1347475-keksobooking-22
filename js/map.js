@@ -1,5 +1,5 @@
 /* global L:readonly */
-import { getDisabled, ADDRESS} from './form.js';
+import { getDisabled, ADDRESS, cleanForm} from './form.js';
 import { createCustomPopup } from './card.js';
 // import {
 //   fillSimilarPromo
@@ -93,7 +93,12 @@ const createPin = (array) => {
   });
 }
 
+const cleanFormUser = () => {
+  cleanForm();
+  cleanMap();
+}
 
-export{createPin, cleanMap}
+
+export{createPin, cleanMap, cleanFormUser}
 
 
