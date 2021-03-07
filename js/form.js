@@ -1,3 +1,7 @@
+import { sendData } from './api.js';
+// import { cleanMap } from './map.js';
+//import {cleanMap} from './map.js';
+
 const CHECKIN = document.querySelector('#timein');
 const CHECKOUT = document.querySelector('#timeout');
 const TYPE = document.querySelector('#type');
@@ -10,9 +14,20 @@ const ADDRESS = document.querySelector('#address');
 const ROOM_NUMBER = document.querySelector('#room_number');
 // const ROOM_OPTION = ROOM_NUMBER.querySelectorAll('option');
 const GUESTS = document.querySelector('#capacity');
-// const GUESTS_OPTION = GUESTS.querySelectorAll('option');
+const MAIN = document.querySelector('main');
+const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
+const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+// const SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
+const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const FORM_SUBMIT = document.querySelector('.ad-form');
+
+// const ERROR = TEMPLATE_ERROR.cloneNode(true);
 
 
+
+
+
+// Разблокировка/блокировка фильтров
 const getDisabled = (isDisabled) => {
 
   if (isDisabled) {
@@ -43,50 +58,24 @@ const priceType = {
   palace: 10000,
 }
 
-
+// Событие изменения цены при изменении типа жилья
 TYPE.addEventListener('change', () => {
   PRICE.placeholder = priceType[TYPE.value]
   PRICE.min = priceType[TYPE.value]
 })
 
-
+// Событие синхронизации времени выезда и заезда
 CHECKIN.addEventListener('change', () => {
   CHECKOUT.value = CHECKIN.value;
 });
 
+// Событие синхронизации времени выезда и заезда
 CHECKOUT.addEventListener('change', () => {
   CHECKIN.value = CHECKOUT.value;
 });
 
 
-// console.log(ROOM_OPTION);
-
-
-
-// GUESTS_OPTION.forEach((elem) => {
-//   if (ROOM_NUMBER.value < elem.value) {
-//     elem.disabled = true;
-//   } if (elem.value < ROOM_NUMBER.value) {
-//     elem.disabled = true
-//   }
-// })
-
-// ROOM_NUMBER.addEventListener('change', () => {
-//   // console.log(typeof(Number(ROOM_NUMBER.value)));
-//   GUESTS_OPTION.forEach((el) => {
-//     if (Number(ROOM_NUMBER.value) >= Number(el.value) &&  Number(el.value) !== 0 && Number(ROOM_NUMBER.value) !== 100)  {
-//       el.disabled = false;
-//     }
-
-//     else if (Number(ROOM_NUMBER.value) === 100 && Number(el.value) === 0) {
-//       el.disabled = false
-//     } else {
-//       el.disabled = true
-//     }
-
-//   })
-// })
-
+// Функция оповещения пользователя при выборе кол-ва комнат
 let checkNumberOfGuestsAndRooms = () => {
   let roomsValue = Number(ROOM_NUMBER.value);
   let guestsValue = Number(GUESTS.value);
@@ -102,10 +91,11 @@ let checkNumberOfGuestsAndRooms = () => {
   }
 }
 
+// Событие при котором срабатывает функция оповещения при смене кол-ва гостей
 GUESTS.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
-
+// Событие при котором срабатывает функция оповещения при смене кол-ва комнат
 ROOM_NUMBER.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
@@ -113,6 +103,146 @@ ROOM_NUMBER.addEventListener('change', () => {
 
 
 
+const cleanForm = () => {
+  const TITLE_INPUT = document.querySelector('#title');
+  const DESCRIPTION_INPUT = document.querySelector('#description');
+  DESCRIPTION_INPUT.value = '';
+  TITLE_INPUT.value = '';
+  CHECKIN.value = '12:00';
+  CHECKOUT.value = '12:00';
+  PRICE.value = '';
+  PRICE.placeholder = '1000'
+  TYPE.value = 'flat';
+  const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
+  // for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
+  //   FEATURES_CHECKBOX[i].checked = false;
+  // }
+  FEATURES_CHECKBOX.forEach((element) => {
+    element.checked = false
+  })
+  ROOM_NUMBER.value = '1';
+  GUESTS.value = '1';
+}
 
 
-export {getDisabled, ADDRESS};
+
+
+
+const successSubmit = (onSuccess) => {
+  MAIN.append(TEMPLATE_SUCCESS)
+  onSuccess()
+
+  window.addEventListener('click', () => {
+    TEMPLATE_SUCCESS.remove();
+  })
+
+
+  window.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === 27) {
+      TEMPLATE_SUCCESS.remove()
+    }
+  })
+  // cleanForm()
+  window.removeEventListener('click', () => {})
+  window.removeEventListener('keydown', () => {})
+
+}
+
+
+
+//Удаление при клике кнопки вызванного сообщения об ошибке
+const deleteErrorPopup = () => {
+  let errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', () => {
+    TEMPLATE_ERROR.remove()
+  })
+  errorButton.removeEventListener('click', () => {})
+}
+
+//Добавление затемнения при ошибке + слушатели для закрытия затемнения
+const errorSubmit = () => {
+  MAIN.append(TEMPLATE_ERROR);
+  // errorButton = document.querySelector('.error__button');
+  deleteErrorPopup()
+
+  window.addEventListener('click', () => {
+    TEMPLATE_ERROR.remove()
+  })
+
+  window.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === 27) {
+      TEMPLATE_ERROR.remove()
+    }
+  })
+
+  window.removeEventListener('click', () => {})
+  window.removeEventListener('keydown', () => {})
+
+}
+
+
+
+
+const setUserFormClean = (clean) => {
+  CLEAN_BUTTON.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    clean();
+    // cleanForm();
+  })
+}
+
+
+
+
+// window.addEventListener('click', (evt) => {
+//   if (evt.target.classList.contains('success')) {
+//     TEMPLATE_SUCCESS.remove();
+//   }
+//   if (evt.target.classList.contains('error')) {
+//     TEMPLATE_ERROR.remove()
+//   }
+// })
+
+// window.addEventListener('keydown', (evt) => {
+//   if (evt.keyCode === 27) {
+//     TEMPLATE_ERROR.remove()
+//     TEMPLATE_SUCCESS.remove()
+//   }
+// })
+
+// window.removeEventListener('click', (evt) => {
+//   if (evt.target.classList.contains('success')) {
+//     TEMPLATE_SUCCESS.remove();
+//   }
+//   if (evt.target.classList.contains('error')) {
+//     TEMPLATE_ERROR.remove()
+//   }
+// })
+
+// window.removeEventListener('keydown', (evt) => {
+//   if (evt.keyCode === 27) {
+//     TEMPLATE_ERROR.remove()
+//     TEMPLATE_SUCCESS.remove()
+//   }
+// })
+
+
+
+const setUserFormSubmit = (onSuccess) => {
+  FORM_SUBMIT.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    //console.log(new FormData(evt.target));
+
+    sendData(
+      () => successSubmit(onSuccess),
+      () => errorSubmit(),
+      new FormData(evt.target),
+    );
+
+  })
+}
+
+
+
+
+export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, cleanForm };

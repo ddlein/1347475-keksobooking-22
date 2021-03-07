@@ -34,6 +34,7 @@ const TO_Y = 139.8;
 const DECIMAL = 5;
 const SIMILAR_PROMO_COUNT = 10;
 
+//Получение  нового массива с перемешанными рандомно элементами
 let getShuffle = (array) => {
   let newArray = array.slice();
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -45,12 +46,10 @@ let getShuffle = (array) => {
   return newArray.slice(getRandomArbitrary(0, array.length - 1));
 };
 
+// Создание одного объекта (временные данные)
 const createPromo = () => {
   let valueX = getRandomFixed(FROM_X, TO_X, DECIMAL);
   let valueY = getRandomFixed(FROM_Y, TO_Y, DECIMAL);
-  // let getRandomFeatures = (elements) => {
-  //   return elements[getRandomArbitrary(0, elements.length - 1)]
-  // }
 
   return {
     author: {
@@ -76,14 +75,12 @@ const createPromo = () => {
   };
 };
 
-// const similarPromo = new Array(SIMILAR_PROMO_COUNT)
-//   .fill(null)
-//   .map(() => createPromo());
-
+// Создание нового массиво из временных данных (выше)
 const fillSimilarPromo = () => {
   return new Array(SIMILAR_PROMO_COUNT).fill(null).map(() => createPromo());
 }
 
+//const fillSimilarPromo = () =>{}
+
 
 export {fillSimilarPromo};
-// console.log(similarPromo);

@@ -1,12 +1,14 @@
 /* global L:readonly */
-import {getDisabled,ADDRESS} from './form.js';
-import {createCustomPopup} from './card.js';
-import {fillSimilarPromo} from './data.js';
+import { getDisabled, ADDRESS, cleanForm} from './form.js';
+import { createCustomPopup } from './card.js';
+// import {
+//   fillSimilarPromo
+// } from './data.js';
 
 
 const LAT = 35.681700;
 const LNG = 139.75388;
-const SCALE = 12;
+const SCALE = 10;
 const MAIN_PIN = {
   width: 52,
   height: 52,
@@ -30,6 +32,7 @@ const map = L.map('map-canvas')
     lng: LNG,
   }, SCALE);
 
+
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -40,7 +43,7 @@ const mainPinIcon = L.icon({
   iconUrl: MAIN_PIN.icon,
   iconSize: [MAIN_PIN.width, MAIN_PIN.height],
   iconAnchor: [MAIN_PIN.width / 2, MAIN_PIN.height],
-} );
+});
 
 const mainPinMarker = L.marker({
   lat: LAT,
@@ -48,7 +51,9 @@ const mainPinMarker = L.marker({
 }, {
   draggable: true,
   icon: mainPinIcon,
-} );
+});
+
+
 
 mainPinMarker.addTo(map);
 
@@ -58,27 +63,42 @@ mainPinMarker.on('moveend', (evt) => {
   ADDRESS.value = `${getLanLng.lat.toFixed(5)}, ${getLanLng.lng.toFixed(5)}`;
 });
 
-let similarPromo = fillSimilarPromo();
+const cleanMap = () => {
+  let newLatLng = new L.LatLng(LAT, LNG);
+  ADDRESS.value = `${LAT}, ${LNG}`;
+  mainPinMarker.setLatLng(newLatLng);
+}
 
+const createPin = (array) => {
+  array.forEach((promo) => {
+    const pinMarkerIcon = L.icon({
+      iconUrl: PIN.icon,
+      iconSize: [PIN.width, PIN.height],
+      iconAnchor: [PIN.width / 2, PIN.height],
+    });
 
-similarPromo.forEach((promo) => {
-  const pinMarkerIcon = L.icon({
-    iconUrl: PIN.icon,
-    iconSize: [PIN.width, PIN.height],
-    iconAnchor: [PIN.width / 2, PIN.height],
+    const pinMarker = L.marker({
+      lat: promo.location.lat,
+      lng: promo.location.lng,
+    }, {
+      draggable: false,
+      icon: pinMarkerIcon,
+    });
+
+    pinMarker
+      .addTo(map)
+      .bindPopup(
+        createCustomPopup(promo),
+      );
   });
+}
 
-  const pinMarker = L.marker({
-    lat: promo.location.x,
-    lng: promo.location.y,
-  }, {
-    draggable: false,
-    icon: pinMarkerIcon,
-  } );
+const cleanFormUser = () => {
+  cleanForm();
+  cleanMap();
+}
 
-  pinMarker
-    .addTo(map)
-    .bindPopup(
-      createCustomPopup(promo),
-    );
-});
+
+export{createPin, cleanMap, cleanFormUser}
+
+
