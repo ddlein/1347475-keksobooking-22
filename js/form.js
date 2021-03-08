@@ -1,6 +1,4 @@
 import { sendData } from './api.js';
-// import { cleanMap } from './map.js';
-//import {cleanMap} from './map.js';
 
 const CHECKIN = document.querySelector('#timein');
 const CHECKOUT = document.querySelector('#timeout');
@@ -12,17 +10,15 @@ const MAP_FILTERS = document.querySelector('.map__filters');
 const MAP_FILTER_SETTING = MAP_FILTERS.querySelectorAll('.map__filter');
 const ADDRESS = document.querySelector('#address');
 const ROOM_NUMBER = document.querySelector('#room_number');
-// const ROOM_OPTION = ROOM_NUMBER.querySelectorAll('option');
 const GUESTS = document.querySelector('#capacity');
 const MAIN = document.querySelector('main');
 const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
 const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-// const SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
 const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 const FORM_SUBMIT = document.querySelector('.ad-form');
-
-// const ERROR = TEMPLATE_ERROR.cloneNode(true);
-
+const TITLE_INPUT = document.querySelector('#title');
+const DESCRIPTION_INPUT = document.querySelector('#description');
+const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
 
 
 
@@ -104,8 +100,6 @@ ROOM_NUMBER.addEventListener('change', () => {
 
 
 const cleanForm = () => {
-  const TITLE_INPUT = document.querySelector('#title');
-  const DESCRIPTION_INPUT = document.querySelector('#description');
   DESCRIPTION_INPUT.value = '';
   TITLE_INPUT.value = '';
   CHECKIN.value = '12:00';
@@ -113,10 +107,6 @@ const cleanForm = () => {
   PRICE.value = '';
   PRICE.placeholder = '1000'
   TYPE.value = 'flat';
-  const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
-  // for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
-  //   FEATURES_CHECKBOX[i].checked = false;
-  // }
   FEATURES_CHECKBOX.forEach((element) => {
     element.checked = false
   })
@@ -124,60 +114,85 @@ const cleanForm = () => {
   GUESTS.value = '1';
 }
 
+const removeSuccessPopup = () => {
+  TEMPLATE_SUCCESS.remove();
+  // console.log(7777);
+  onSuccessPopupClick();
+}
+
+const onSuccessPopupClick = () => {
+  TEMPLATE_SUCCESS.removeEventListener('click', removeSuccessPopup)
+}
 
 
+const escKeyDownSuccess = (evt) => {
+  if (evt.keyCode === 27) {
+    evt.preventDefault()
+    TEMPLATE_SUCCESS.remove();
+    // console.log('delet popup');
+    onSuccessPopupKeydown();
+  }
+}
+
+const onSuccessPopupKeydown = () => {
+  window.removeEventListener('keydown', escKeyDownSuccess)
+}
 
 
 const successSubmit = (onSuccess) => {
-  MAIN.append(TEMPLATE_SUCCESS)
-  onSuccess()
+  MAIN.append(TEMPLATE_SUCCESS);
+  onSuccess();
 
-  window.addEventListener('click', () => {
-    TEMPLATE_SUCCESS.remove();
-  })
+  TEMPLATE_SUCCESS.addEventListener('click', removeSuccessPopup);
+  window.addEventListener('keydown', escKeyDownSuccess)
+}
 
 
-  window.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      TEMPLATE_SUCCESS.remove()
-    }
-  })
-  // cleanForm()
-  window.removeEventListener('click', () => {})
-  window.removeEventListener('keydown', () => {})
+const removeErrorPopup = () => {
+  TEMPLATE_ERROR.remove();
+  // console.log('00000');
+  onErrorPopupclick()
+}
 
+const onErrorPopupclick = () => {
+  TEMPLATE_ERROR.removeEventListener('click', removeErrorPopup)
+}
+
+const escKeyDownError = (evt) => {
+  if (evt.keyCode === 27) {
+    evt.preventDefault()
+    TEMPLATE_ERROR.remove();
+    // console.log('delet popup');
+    onErrorPopupKeydown();
+  }
+}
+
+const onErrorPopupKeydown = () => {
+  window.removeEventListener('keydown', escKeyDownError)
 }
 
 
 
-//Удаление при клике кнопки вызванного сообщения об ошибке
-const deleteErrorPopup = () => {
-  let errorButton = document.querySelector('.error__button');
-  errorButton.addEventListener('click', () => {
-    TEMPLATE_ERROR.remove()
-  })
-  errorButton.removeEventListener('click', () => {})
+let errorButton;
+
+
+const buttonOfErrorPopup = () => {
+  TEMPLATE_ERROR.remove();
+  onButtonErrorPopup()
+}
+
+const onButtonErrorPopup = () => {
+  errorButton.removeEventListener('click', buttonOfErrorPopup)
 }
 
 //Добавление затемнения при ошибке + слушатели для закрытия затемнения
 const errorSubmit = () => {
   MAIN.append(TEMPLATE_ERROR);
-  // errorButton = document.querySelector('.error__button');
-  deleteErrorPopup()
 
-  window.addEventListener('click', () => {
-    TEMPLATE_ERROR.remove()
-  })
-
-  window.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      TEMPLATE_ERROR.remove()
-    }
-  })
-
-  window.removeEventListener('click', () => {})
-  window.removeEventListener('keydown', () => {})
-
+  TEMPLATE_ERROR.addEventListener('click', removeErrorPopup);
+  window.addEventListener('keydown', escKeyDownError);
+  errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', buttonOfErrorPopup)
 }
 
 
@@ -187,45 +202,8 @@ const setUserFormClean = (clean) => {
   CLEAN_BUTTON.addEventListener('click', (evt) => {
     evt.preventDefault();
     clean();
-    // cleanForm();
   })
 }
-
-
-
-
-// window.addEventListener('click', (evt) => {
-//   if (evt.target.classList.contains('success')) {
-//     TEMPLATE_SUCCESS.remove();
-//   }
-//   if (evt.target.classList.contains('error')) {
-//     TEMPLATE_ERROR.remove()
-//   }
-// })
-
-// window.addEventListener('keydown', (evt) => {
-//   if (evt.keyCode === 27) {
-//     TEMPLATE_ERROR.remove()
-//     TEMPLATE_SUCCESS.remove()
-//   }
-// })
-
-// window.removeEventListener('click', (evt) => {
-//   if (evt.target.classList.contains('success')) {
-//     TEMPLATE_SUCCESS.remove();
-//   }
-//   if (evt.target.classList.contains('error')) {
-//     TEMPLATE_ERROR.remove()
-//   }
-// })
-
-// window.removeEventListener('keydown', (evt) => {
-//   if (evt.keyCode === 27) {
-//     TEMPLATE_ERROR.remove()
-//     TEMPLATE_SUCCESS.remove()
-//   }
-// })
-
 
 
 const setUserFormSubmit = (onSuccess) => {
