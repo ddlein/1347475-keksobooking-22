@@ -19,6 +19,9 @@ const FORM_SUBMIT = document.querySelector('.ad-form');
 const TITLE_INPUT = document.querySelector('#title');
 const DESCRIPTION_INPUT = document.querySelector('#description');
 const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
+const HOUSING_TYPE = document.querySelector('#housing-type');
+// const HOUSING_PRICE = document.querySelector('#housing-price');
+
 
 
 
@@ -114,17 +117,19 @@ const cleanForm = () => {
   GUESTS.value = '1';
 }
 
+// удаление попапа об Успешной форме
 const removeSuccessPopup = () => {
   TEMPLATE_SUCCESS.remove();
   // console.log(7777);
   onSuccessPopupClick();
 }
 
+// удаление слушателя на на Успешном Попапе
 const onSuccessPopupClick = () => {
   TEMPLATE_SUCCESS.removeEventListener('click', removeSuccessPopup)
 }
 
-
+// удаление попапа при нажатии на Esc
 const escKeyDownSuccess = (evt) => {
   if (evt.keyCode === 27) {
     evt.preventDefault()
@@ -134,11 +139,13 @@ const escKeyDownSuccess = (evt) => {
   }
 }
 
+// удаление слушателя на Esc
 const onSuccessPopupKeydown = () => {
   window.removeEventListener('keydown', escKeyDownSuccess)
 }
 
-
+// Добавление Попапа на экран при успешной отправке формы,
+// onSuccess это очистка формы
 const successSubmit = (onSuccess) => {
   MAIN.append(TEMPLATE_SUCCESS);
   onSuccess();
@@ -175,7 +182,6 @@ const onErrorPopupKeydown = () => {
 
 let errorButton;
 
-
 const buttonOfErrorPopup = () => {
   TEMPLATE_ERROR.remove();
   onButtonErrorPopup()
@@ -209,7 +215,6 @@ const setUserFormClean = (clean) => {
 const setUserFormSubmit = (onSuccess) => {
   FORM_SUBMIT.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    //console.log(new FormData(evt.target));
 
     sendData(
       () => successSubmit(onSuccess),
@@ -221,6 +226,18 @@ const setUserFormSubmit = (onSuccess) => {
 }
 
 
+const changeFilterType = (cb) => {
+  HOUSING_TYPE.addEventListener('change', () => {
+    // console.log(evt.target.value);
+    cb()
+  })
+}
+
+// const changeFilterPrice = (cb) => {
+//   HOUSING_PRICE.addEventListener('change', () => {
+//     cb()
+//   })
+// }
 
 
-export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, cleanForm };
+export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, cleanForm, changeFilterType /*changeFilterPrice */ };
