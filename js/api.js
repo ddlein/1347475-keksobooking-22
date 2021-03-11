@@ -7,8 +7,8 @@ const getData = (onSuccess, onError) => {
     .then((promos) => {
       onSuccess(promos)
     })
-    .catch((e) => {
-      onError('Не удалось загрузить данные'+e)
+    .catch((error) => {
+      onError('Не удалось загрузить данные'+ error)
     })
 }
 

@@ -1,5 +1,5 @@
 /* global L:readonly */
-import { getDisabled, ADDRESS, cleanForm } from './form.js';
+import { getDisabled, address, cleanForm } from './form.js';
 import { createCustomPopup } from './card.js';
 // import {
 //   fillSimilarPromo
@@ -26,7 +26,7 @@ const PIN = {
 const map = L.map('map-canvas')
   .on('load', () => {
     getDisabled(false)
-    ADDRESS.value = `${LAT}, ${LNG}`;
+    address.value = `${LAT}, ${LNG}`;
 
   })
   .setView({
@@ -62,29 +62,63 @@ mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (evt) => {
   let getLanLng = evt.target.getLatLng();
-  ADDRESS.value = `${getLanLng.lat.toFixed(5)}, ${getLanLng.lng.toFixed(5)}`;
+  address.value = `${getLanLng.lat.toFixed(5)}, ${getLanLng.lng.toFixed(5)}`;
 });
 
 const cleanMap = () => {
   let newLatLng = new L.LatLng(LAT, LNG);
-  ADDRESS.value = `${LAT}, ${LNG}`;
+  address.value = `${LAT}, ${LNG}`;
   mainPinMarker.setLatLng(newLatLng);
 }
 
 const setFilterforType = (promo) => {
-  const HOUSING_TYPE = document.querySelector('#housing-type');
-  if (promo.offer.type === HOUSING_TYPE.value) {
-    // console.log('selected');
-    return promo
-  } else if (HOUSING_TYPE.value === 'any') {
-    // console.log('any');
-    return promo
+  const housingTypeValue = document.querySelector('#housing-type').value;
+  // if (promo.offer.type === housingTypeValue) {
+  //   console.log('type selected');
+  //   // console.log(1);
+  //   return promo
+  // } else if (housingTypeValue === 'any') {
+  //   console.log('type any');
+  //   return promo
+  // }
+
+
+  if (housingTypeValue === 'any') {
+    return true;
   }
+  return promo.offer.type === housingTypeValue;
 
   // const HOUSING_PRICE = document.querySelector('#housing-price');
   // if (promo.offer.price === HOUSING_PRICE.value) {
   //   return promo
   // } else if (HOUSING_PRICE.value === 'any') {
+  //   return promo
+  // }
+}
+
+
+
+const setFilterForPrice = (promo) => {
+  const PRICES = {
+    middle: promo.offer.price >= 10000 && promo.offer.price <= 50000,
+    low: promo.offer.price < 10000,
+    high: promo.offer.price >= 50000,
+    any: promo.offer.price <= 10000 || promo.offer.price >= 50000,
+    // any: promo.offer.type,
+  }
+  const housingPriceValue = document.querySelector('#housing-price').value;
+  console.log(PRICES[housingPriceValue]);
+  return PRICES[housingPriceValue]
+  // if (promo.offer.price >= PRICES.middle.min && promo.offer.price <= PRICES.middle.max) {
+  //   return promo
+  // } else if (promo.offer.price < PRICES[housingPriceValue]) {
+  //   console.log('low');
+  //   return promo
+  // } else if (promo.offer.price > PRICES[housingPriceValue]) {
+  //   console.log('high');
+  //   return promo
+  // } else {
+  //   console.log('any');
   //   return promo
   // }
 }
@@ -101,6 +135,7 @@ const createPin = (array) => {
   // console.log(markers);
   let newArr = array
     .filter(setFilterforType)
+    .filter(setFilterForPrice)
     .slice(0, SIMILAR_PROMO_COUNT)
   newArr
     .forEach((promo) => {

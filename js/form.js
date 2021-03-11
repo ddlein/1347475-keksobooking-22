@@ -1,5 +1,6 @@
 import { sendData } from './api.js';
 
+// TODO поменять регистр команд
 const CHECKIN = document.querySelector('#timein');
 const CHECKOUT = document.querySelector('#timeout');
 const TYPE = document.querySelector('#type');
@@ -8,7 +9,7 @@ const FORM = document.querySelector('.ad-form');
 const FORM_ELEMENT = FORM.querySelectorAll('fieldset')
 const MAP_FILTERS = document.querySelector('.map__filters');
 const MAP_FILTER_SETTING = MAP_FILTERS.querySelectorAll('.map__filter');
-const ADDRESS = document.querySelector('#address');
+const address = document.querySelector('#address');
 const ROOM_NUMBER = document.querySelector('#room_number');
 const GUESTS = document.querySelector('#capacity');
 const MAIN = document.querySelector('main');
@@ -20,7 +21,7 @@ const TITLE_INPUT = document.querySelector('#title');
 const DESCRIPTION_INPUT = document.querySelector('#description');
 const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
 const HOUSING_TYPE = document.querySelector('#housing-type');
-// const HOUSING_PRICE = document.querySelector('#housing-price');
+const HOUSING_PRICE = document.querySelector('#housing-price');
 
 
 
@@ -233,11 +234,11 @@ const changeFilterType = (cb) => {
   })
 }
 
-// const changeFilterPrice = (cb) => {
-//   HOUSING_PRICE.addEventListener('change', () => {
-//     cb()
-//   })
-// }
+const changeFilterPrice = (cb) => {
+  HOUSING_PRICE.addEventListener('change', () => {
+    cb()
+  })
+}
 
 
-export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, cleanForm, changeFilterType /*changeFilterPrice */ };
+export { getDisabled, address, setUserFormSubmit, setUserFormClean, cleanForm, changeFilterType, changeFilterPrice};
