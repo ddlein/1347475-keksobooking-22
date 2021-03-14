@@ -8,6 +8,7 @@ import {getData} from './api.js';
 import {createPin, cleanFormUser} from './map.js';
 import {setUserFormSubmit, setUserFormClean, changeFilterType, changeFilterPrice, changeFilterRooms, changeFilterGuests,changeFilterFeatures} from './form.js';
 import {showError} from './util.js';
+import './avatar.js';
 
 const RERENDER_DELAY = 500;
 
