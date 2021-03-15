@@ -1,16 +1,13 @@
 /* global L:readonly */
-import { getDisabled, address, cleanForm } from './form.js';
+import { getDisabledFilter, getDisabledForm, address, cleanForm } from './form.js';
 import { createCustomPopup } from './card.js';
-// import {
-//   fillSimilarPromo
-// } from './data.js';
+
 
 
 const LAT = 35.681700;
 const LNG = 139.75388;
 const SCALE = 10;
 const SIMILAR_PROMO_COUNT = 10;
-const housingFeatures = document.querySelectorAll('.map__checkbox');
 
 
 const MAIN_PIN = {
@@ -27,7 +24,7 @@ const PIN = {
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    getDisabled(false)
+    getDisabledForm(false)
     address.value = `${LAT}, ${LNG}`;
 
   })
@@ -98,7 +95,6 @@ const setFilterForPrice = (promo) => {
 const setFilterForRooms = (promo) => {
   const housingRoomsValue = document.querySelector('#housing-rooms').value;
   if (housingRoomsValue === promo.offer.rooms.toString()) {
-    // console.log('truuuu');
     return true
   } else if (housingRoomsValue === 'any') {
     return true
@@ -115,27 +111,15 @@ const setFilterForGuests = (promo) => {
 }
 
 const setFilterForFeatures = (promo) => {
+  const housingFeatures = document.querySelectorAll('.map__checkbox');
   let mass = [];
   housingFeatures.forEach((element) => {
     if (element.checked) {
-      // console.log(promo.offer.features.includes(element.value));
-      if (promo.offer.features.includes(element.value)) {
-        mass.push(true);
-        // console.log(element.value + ' true')
-      }
-      else {
-        mass.push(false);
-        // console.log(element.value + ' false')
-      }
+      promo.offer.features.includes(element.value) ? mass.push(true) : mass.push(false)
     }
   })
 
-  // console.log(mass);
-  if (mass.includes(false)) {
-    return false
-  } else {
-    return true
-  }
+  return mass.includes(false) ? false : true;
 }
 
 
@@ -177,6 +161,7 @@ const createPin = (array) => {
     });
 
   markers.addTo(map)
+  getDisabledFilter(false)
 }
 
 const cleanFormUser = () => {

@@ -33,20 +33,20 @@ const housingFeatures = document.querySelector('#housing-features');
 
 
 // Разблокировка/блокировка фильтров
-const getDisabled = (isDisabled) => {
+const getDisabledFilter = (isDisabled) => {
 
   if (isDisabled) {
-    form.classList.add('ad-form--disabled');
+    // form.classList.add('ad-form--disabled');
     mapFilters.classList.add('ad-form--disabled');
   } else {
-    form.classList.remove('ad-form--disabled');
+    // form.classList.remove('ad-form--disabled');
     mapFilters.classList.remove('ad-form--disabled');
   }
 
 
-  formElement.forEach((fieldset) => {
-    fieldset.disabled = isDisabled
-  })
+  // formElement.forEach((fieldset) => {
+  //   fieldset.disabled = isDisabled
+  // })
 
 
   mapFilterSettings.forEach((mapFilter) => {
@@ -54,7 +54,29 @@ const getDisabled = (isDisabled) => {
   })
 }
 
-getDisabled(true)
+
+const getDisabledForm = (isDisabled) => {
+  if (isDisabled) {
+    form.classList.add('ad-form--disabled');
+    // mapFilters.classList.add('ad-form--disabled');
+  } else {
+    form.classList.remove('ad-form--disabled');
+    // mapFilters.classList.remove('ad-form--disabled');
+  }
+
+
+  formElement.forEach((fieldset) => {
+    fieldset.disabled = isDisabled
+  })
+
+  // mapFilterSettings.forEach((mapFilter) => {
+  //   mapFilter.disabled = isDisabled
+  // })
+}
+
+getDisabledFilter(true) //фильтр по Пинам
+getDisabledForm(true) // фильтр по созданию Объяв
+
 
 const priceType = {
   bungalow: 0,
@@ -172,7 +194,6 @@ const escKeyDownError = (evt) => {
   if (evt.keyCode === 27) {
     evt.preventDefault()
     templateError.remove();
-    // console.log('delet popup');
     onErrorPopupKeydown();
   }
 }
@@ -231,7 +252,6 @@ const setUserFormSubmit = (onSuccess) => {
 
 const changeFilterType = (cb) => {
   housingType.addEventListener('change', () => {
-    // console.log(evt.target.value);
     cb()
   })
 }
@@ -263,5 +283,5 @@ const changeFilterFeatures = (cb) => {
 
 
 
-export { getDisabled, address, setUserFormSubmit, setUserFormClean, cleanForm, changeFilterType, changeFilterPrice, changeFilterRooms, changeFilterGuests, changeFilterFeatures};
+export { getDisabledFilter, getDisabledForm, address, setUserFormSubmit, setUserFormClean, cleanForm, changeFilterType, changeFilterPrice, changeFilterRooms, changeFilterGuests, changeFilterFeatures};
 
