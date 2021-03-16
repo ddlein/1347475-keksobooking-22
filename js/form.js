@@ -1,55 +1,82 @@
 import { sendData } from './api.js';
-// import { cleanMap } from './map.js';
-//import {cleanMap} from './map.js';
 
-const CHECKIN = document.querySelector('#timein');
-const CHECKOUT = document.querySelector('#timeout');
-const TYPE = document.querySelector('#type');
-const PRICE = document.querySelector('#price');
-const FORM = document.querySelector('.ad-form');
-const FORM_ELEMENT = FORM.querySelectorAll('fieldset')
-const MAP_FILTERS = document.querySelector('.map__filters');
-const MAP_FILTER_SETTING = MAP_FILTERS.querySelectorAll('.map__filter');
-const ADDRESS = document.querySelector('#address');
-const ROOM_NUMBER = document.querySelector('#room_number');
-// const ROOM_OPTION = ROOM_NUMBER.querySelectorAll('option');
-const GUESTS = document.querySelector('#capacity');
-const MAIN = document.querySelector('main');
-const CLEAN_BUTTON = document.querySelector('.ad-form__reset');
-const TEMPLATE_SUCCESS = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-// const SUCCESS = TEMPLATE_SUCCESS.cloneNode(true);
-const TEMPLATE_ERROR = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-const FORM_SUBMIT = document.querySelector('.ad-form');
+// TODO поменять регистр команд
+const checkin = document.querySelector('#timein');
+const checkout = document.querySelector('#timeout');
+const type = document.querySelector('#type');
+const price = document.querySelector('#price');
+const form = document.querySelector('.ad-form');
+const formElement = form.querySelectorAll('fieldset')
+const mapFilters = document.querySelector('.map__filters');
+const mapFilterSettings = mapFilters.querySelectorAll('.map__filter');
+const address = document.querySelector('#address');
+const roomNumber = document.querySelector('#room_number');
+const guests = document.querySelector('#capacity');
+const main = document.querySelector('main');
+const cleanButton = document.querySelector('.ad-form__reset');
+const templateSuccess = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+const templateError = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const formSubmit = document.querySelector('.ad-form');
+const titleInput = document.querySelector('#title');
+const descriptionInput = document.querySelector('#description');
+const featuresCheckbox = document.querySelectorAll('.feature__checkbox');
+const housingType = document.querySelector('#housing-type');
+const housingPrice = document.querySelector('#housing-price');
+const housingRooms = document.querySelector('#housing-rooms');
+const housingGuests = document.querySelector('#housing-guests');
+const housingFeatures = document.querySelector('#housing-features');
 
-// const ERROR = TEMPLATE_ERROR.cloneNode(true);
+
 
 
 
 
 
 // Разблокировка/блокировка фильтров
-const getDisabled = (isDisabled) => {
+const getDisabledFilter = (isDisabled) => {
 
   if (isDisabled) {
-    FORM.classList.add('ad-form--disabled');
-    MAP_FILTERS.classList.add('ad-form--disabled');
+    // form.classList.add('ad-form--disabled');
+    mapFilters.classList.add('ad-form--disabled');
   } else {
-    FORM.classList.remove('ad-form--disabled');
-    MAP_FILTERS.classList.remove('ad-form--disabled');
+    // form.classList.remove('ad-form--disabled');
+    mapFilters.classList.remove('ad-form--disabled');
   }
 
 
-  FORM_ELEMENT.forEach((fieldset) => {
-    fieldset.disabled = isDisabled
-  })
+  // formElement.forEach((fieldset) => {
+  //   fieldset.disabled = isDisabled
+  // })
 
 
-  MAP_FILTER_SETTING.forEach((mapFilter) => {
+  mapFilterSettings.forEach((mapFilter) => {
     mapFilter.disabled = isDisabled
   })
 }
 
-getDisabled(true)
+
+const getDisabledForm = (isDisabled) => {
+  if (isDisabled) {
+    form.classList.add('ad-form--disabled');
+    // mapFilters.classList.add('ad-form--disabled');
+  } else {
+    form.classList.remove('ad-form--disabled');
+    // mapFilters.classList.remove('ad-form--disabled');
+  }
+
+
+  formElement.forEach((fieldset) => {
+    fieldset.disabled = isDisabled
+  })
+
+  // mapFilterSettings.forEach((mapFilter) => {
+  //   mapFilter.disabled = isDisabled
+  // })
+}
+
+getDisabledFilter(true) //фильтр по Пинам
+getDisabledForm(true) // фильтр по созданию Объяв
+
 
 const priceType = {
   bungalow: 0,
@@ -59,44 +86,44 @@ const priceType = {
 }
 
 // Событие изменения цены при изменении типа жилья
-TYPE.addEventListener('change', () => {
-  PRICE.placeholder = priceType[TYPE.value]
-  PRICE.min = priceType[TYPE.value]
+type.addEventListener('change', () => {
+  price.placeholder = priceType[type.value]
+  price.min = priceType[type.value]
 })
 
 // Событие синхронизации времени выезда и заезда
-CHECKIN.addEventListener('change', () => {
-  CHECKOUT.value = CHECKIN.value;
+checkin.addEventListener('change', () => {
+  checkout.value = checkin.value;
 });
 
 // Событие синхронизации времени выезда и заезда
-CHECKOUT.addEventListener('change', () => {
-  CHECKIN.value = CHECKOUT.value;
+checkout.addEventListener('change', () => {
+  checkin.value = checkout.value;
 });
 
 
 // Функция оповещения пользователя при выборе кол-ва комнат
 let checkNumberOfGuestsAndRooms = () => {
-  let roomsValue = Number(ROOM_NUMBER.value);
-  let guestsValue = Number(GUESTS.value);
+  let roomsValue = Number(roomNumber.value);
+  let guestsValue = Number(guests.value);
 
   if (roomsValue !== 100 && guestsValue === 0) {
-    GUESTS.setCustomValidity('Недостаточно гостей');
+    guests.setCustomValidity('Недостаточно гостей');
   } else if (roomsValue < guestsValue) {
-    GUESTS.setCustomValidity('Гостей слишком много')
+    guests.setCustomValidity('Гостей слишком много')
   } else if (roomsValue === 100 && guestsValue !== 0) {
-    GUESTS.setCustomValidity('Данный вариант не для гостей')
+    guests.setCustomValidity('Данный вариант не для гостей')
   } else {
-    GUESTS.setCustomValidity('');
+    guests.setCustomValidity('');
   }
 }
 
 // Событие при котором срабатывает функция оповещения при смене кол-ва гостей
-GUESTS.addEventListener('change', () => {
+guests.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
 // Событие при котором срабатывает функция оповещения при смене кол-ва комнат
-ROOM_NUMBER.addEventListener('change', () => {
+roomNumber.addEventListener('change', () => {
   checkNumberOfGuestsAndRooms()
 })
 
@@ -104,134 +131,114 @@ ROOM_NUMBER.addEventListener('change', () => {
 
 
 const cleanForm = () => {
-  const TITLE_INPUT = document.querySelector('#title');
-  const DESCRIPTION_INPUT = document.querySelector('#description');
-  DESCRIPTION_INPUT.value = '';
-  TITLE_INPUT.value = '';
-  CHECKIN.value = '12:00';
-  CHECKOUT.value = '12:00';
-  PRICE.value = '';
-  PRICE.placeholder = '1000'
-  TYPE.value = 'flat';
-  const FEATURES_CHECKBOX = document.querySelectorAll('.feature__checkbox');
-  // for (let i = 0; i < FEATURES_CHECKBOX.length; i++) {
-  //   FEATURES_CHECKBOX[i].checked = false;
-  // }
-  FEATURES_CHECKBOX.forEach((element) => {
+  descriptionInput.value = '';
+  titleInput.value = '';
+  checkin.value = '12:00';
+  checkout.value = '12:00';
+  price.value = '';
+  price.placeholder = '1000'
+  type.value = 'flat';
+  featuresCheckbox.forEach((element) => {
     element.checked = false
   })
-  ROOM_NUMBER.value = '1';
-  GUESTS.value = '1';
+  roomNumber.value = '1';
+  guests.value = '1';
 }
 
+// удаление попапа об Успешной форме
+const removeSuccessPopup = () => {
+  templateSuccess.remove();
+  onSuccessPopupClick();
+}
 
+// удаление слушателя на на Успешном Попапе
+const onSuccessPopupClick = () => {
+  templateSuccess.removeEventListener('click', removeSuccessPopup)
+}
 
+// удаление попапа при нажатии на Esc
+const escKeyDownSuccess = (evt) => {
+  if (evt.keyCode === 27) {
+    evt.preventDefault()
+    templateSuccess.remove();
+    onSuccessPopupKeydown();
+  }
+}
 
+// удаление слушателя на Esc
+const onSuccessPopupKeydown = () => {
+  window.removeEventListener('keydown', escKeyDownSuccess)
+}
 
+// Добавление Попапа на экран при успешной отправке формы,
+// onSuccess это очистка формы
 const successSubmit = (onSuccess) => {
-  MAIN.append(TEMPLATE_SUCCESS)
-  onSuccess()
+  main.append(templateSuccess);
+  onSuccess();
 
-  window.addEventListener('click', () => {
-    TEMPLATE_SUCCESS.remove();
-  })
+  templateSuccess.addEventListener('click', removeSuccessPopup);
+  window.addEventListener('keydown', escKeyDownSuccess)
+}
 
 
-  window.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      TEMPLATE_SUCCESS.remove()
-    }
-  })
-  // cleanForm()
-  window.removeEventListener('click', () => {})
-  window.removeEventListener('keydown', () => {})
+const removeErrorPopup = () => {
+  templateError.remove();
+  onErrorPopupclick()
+}
 
+const onErrorPopupclick = () => {
+  templateError.removeEventListener('click', removeErrorPopup)
+}
+
+const escKeyDownError = (evt) => {
+  if (evt.keyCode === 27) {
+    evt.preventDefault()
+    templateError.remove();
+    onErrorPopupKeydown();
+  }
+}
+
+const onErrorPopupKeydown = () => {
+  window.removeEventListener('keydown', escKeyDownError)
 }
 
 
 
-//Удаление при клике кнопки вызванного сообщения об ошибке
-const deleteErrorPopup = () => {
-  let errorButton = document.querySelector('.error__button');
-  errorButton.addEventListener('click', () => {
-    TEMPLATE_ERROR.remove()
-  })
-  errorButton.removeEventListener('click', () => {})
+let errorButton;
+
+const buttonOfErrorPopup = () => {
+  templateError.remove();
+  onButtonErrorPopup()
+}
+
+const onButtonErrorPopup = () => {
+  errorButton.removeEventListener('click', buttonOfErrorPopup)
 }
 
 //Добавление затемнения при ошибке + слушатели для закрытия затемнения
 const errorSubmit = () => {
-  MAIN.append(TEMPLATE_ERROR);
-  // errorButton = document.querySelector('.error__button');
-  deleteErrorPopup()
+  main.append(templateError);
 
-  window.addEventListener('click', () => {
-    TEMPLATE_ERROR.remove()
-  })
-
-  window.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      TEMPLATE_ERROR.remove()
-    }
-  })
-
-  window.removeEventListener('click', () => {})
-  window.removeEventListener('keydown', () => {})
-
+  templateError.addEventListener('click', removeErrorPopup);
+  window.addEventListener('keydown', escKeyDownError);
+  errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', buttonOfErrorPopup)
 }
 
 
 
 
 const setUserFormClean = (clean) => {
-  CLEAN_BUTTON.addEventListener('click', (evt) => {
+  cleanButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     clean();
-    // cleanForm();
   })
 }
 
 
-
-
-// window.addEventListener('click', (evt) => {
-//   if (evt.target.classList.contains('success')) {
-//     TEMPLATE_SUCCESS.remove();
-//   }
-//   if (evt.target.classList.contains('error')) {
-//     TEMPLATE_ERROR.remove()
-//   }
-// })
-
-// window.addEventListener('keydown', (evt) => {
-//   if (evt.keyCode === 27) {
-//     TEMPLATE_ERROR.remove()
-//     TEMPLATE_SUCCESS.remove()
-//   }
-// })
-
-// window.removeEventListener('click', (evt) => {
-//   if (evt.target.classList.contains('success')) {
-//     TEMPLATE_SUCCESS.remove();
-//   }
-//   if (evt.target.classList.contains('error')) {
-//     TEMPLATE_ERROR.remove()
-//   }
-// })
-
-// window.removeEventListener('keydown', (evt) => {
-//   if (evt.keyCode === 27) {
-//     TEMPLATE_ERROR.remove()
-//     TEMPLATE_SUCCESS.remove()
-//   }
-// })
-
-
-
 const setUserFormSubmit = (onSuccess) => {
-  FORM_SUBMIT.addEventListener('submit', (evt) => {
+  formSubmit.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    //console.log(new FormData(evt.target));
 
     sendData(
       () => successSubmit(onSuccess),
@@ -243,6 +250,38 @@ const setUserFormSubmit = (onSuccess) => {
 }
 
 
+const changeFilterType = (cb) => {
+  housingType.addEventListener('change', () => {
+    cb()
+  })
+}
+
+const changeFilterPrice = (cb) => {
+  housingPrice.addEventListener('change', () => {
+    cb()
+  })
+}
+
+const changeFilterRooms = (cb) => {
+  housingRooms.addEventListener('change', () => {
+    cb()
+  })
+}
+
+const changeFilterGuests = (cb) => {
+  housingGuests.addEventListener('change', () => {
+    cb()
+  })
+}
 
 
-export { getDisabled, ADDRESS, setUserFormSubmit, setUserFormClean, cleanForm };
+const changeFilterFeatures = (cb) => {
+  housingFeatures.addEventListener('change', () => {
+    cb()
+  })
+}
+
+
+
+export { getDisabledFilter, getDisabledForm, address, setUserFormSubmit, setUserFormClean, cleanForm, changeFilterType, changeFilterPrice, changeFilterRooms, changeFilterGuests, changeFilterFeatures};
+

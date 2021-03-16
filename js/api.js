@@ -1,19 +1,14 @@
 // const getData = (onSuccess) => {};
 
+
 const getData = (onSuccess, onError) => {
   fetch('https://22.javascript.pages.academy/keksobooking/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json()
-      }
-      // throw new Error(`${response.status} ${response.statusText}`)
-    })
+    .then((response) => response.json())
     .then((promos) => {
-      // console.log(promos);
       onSuccess(promos)
     })
-    .catch(() => {
-      onError('Не удалось загрузить данные')
+    .catch((error) => {
+      onError('Не удалось загрузить данные'+ error)
     })
 }
 
