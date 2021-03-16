@@ -68,6 +68,10 @@ const cleanMap = () => {
   let newLatLng = new L.LatLng(LAT, LNG);
   address.value = `${LAT}, ${LNG}`;
   mainPinMarker.setLatLng(newLatLng);
+  map.setView({
+    lat: LAT,
+    lng: LNG,
+  }, SCALE);
 }
 
 const setFilterforType = (promo) => {
@@ -112,14 +116,14 @@ const setFilterForGuests = (promo) => {
 
 const setFilterForFeatures = (promo) => {
   const housingFeatures = document.querySelectorAll('.map__checkbox');
-  let mass = [];
+  let checkedFeatures = [];
   housingFeatures.forEach((element) => {
     if (element.checked) {
-      promo.offer.features.includes(element.value) ? mass.push(true) : mass.push(false)
+      promo.offer.features.includes(element.value) ? checkedFeatures.push(true) : checkedFeatures.push(false)
     }
   })
 
-  return mass.includes(false) ? false : true;
+  return checkedFeatures.includes(false) ? false : true;
 }
 
 
