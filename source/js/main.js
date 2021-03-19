@@ -1,6 +1,5 @@
 /* global _:readonly */
 
-import './data.js';
 import './card.js';
 import './form.js';
 import './map.js';
@@ -11,7 +10,6 @@ import {showError} from './util.js';
 import './avatar.js';
 
 const RERENDER_DELAY = 500;
-
 
 getData((promos) => {
   createPin(promos);

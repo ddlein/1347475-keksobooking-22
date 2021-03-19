@@ -1,6 +1,5 @@
 import { sendData } from './api.js';
 
-// TODO поменять регистр команд
 const checkin = document.querySelector('#timein');
 const checkout = document.querySelector('#timeout');
 const type = document.querySelector('#type');
@@ -25,29 +24,23 @@ const housingPrice = document.querySelector('#housing-price');
 const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
 const housingFeatures = document.querySelector('#housing-features');
-
-
-
-
-
+const allHousingFeatures = document.querySelectorAll('.map__checkbox')
+const priceType = {
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000,
+}
 
 
 // Разблокировка/блокировка фильтров
 const getDisabledFilter = (isDisabled) => {
 
   if (isDisabled) {
-    // form.classList.add('ad-form--disabled');
-    mapFilters.classList.add('ad-form--disabled');
+    mapFilters.classList.add('map__filters--disabled');
   } else {
-    // form.classList.remove('ad-form--disabled');
-    mapFilters.classList.remove('ad-form--disabled');
+    mapFilters.classList.remove('map__filters--disabled');
   }
-
-
-  // formElement.forEach((fieldset) => {
-  //   fieldset.disabled = isDisabled
-  // })
-
 
   mapFilterSettings.forEach((mapFilter) => {
     mapFilter.disabled = isDisabled
@@ -58,32 +51,19 @@ const getDisabledFilter = (isDisabled) => {
 const getDisabledForm = (isDisabled) => {
   if (isDisabled) {
     form.classList.add('ad-form--disabled');
-    // mapFilters.classList.add('ad-form--disabled');
   } else {
     form.classList.remove('ad-form--disabled');
-    // mapFilters.classList.remove('ad-form--disabled');
   }
-
 
   formElement.forEach((fieldset) => {
     fieldset.disabled = isDisabled
   })
-
-  // mapFilterSettings.forEach((mapFilter) => {
-  //   mapFilter.disabled = isDisabled
-  // })
 }
 
 getDisabledFilter(true) //фильтр по Пинам
 getDisabledForm(true) // фильтр по созданию Объяв
 
 
-const priceType = {
-  bungalow: 0,
-  flat: 1000,
-  house: 5000,
-  palace: 10000,
-}
 
 // Событие изменения цены при изменении типа жилья
 type.addEventListener('change', () => {
@@ -143,6 +123,13 @@ const cleanForm = () => {
   })
   roomNumber.value = '1';
   guests.value = '1';
+  housingType.value = 'any';
+  housingPrice.value = 'any';
+  housingRooms.value = 'any';
+  housingGuests.value = 'any';
+  allHousingFeatures.forEach((element) => {
+    element.checked = false
+  });
 }
 
 // удаление попапа об Успешной форме

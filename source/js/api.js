@@ -1,4 +1,3 @@
-// const getData = (onSuccess) => {};
 
 
 const getData = (onSuccess, onError) => {
