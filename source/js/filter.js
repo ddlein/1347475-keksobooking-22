@@ -13,7 +13,6 @@ const setFilterForPrice = (promo) => {
     middle: promo.offer.price >= 10000 && promo.offer.price <= 50000,
     low: promo.offer.price < 10000,
     high: promo.offer.price >= 50000,
-    // any: promo.offer.price <= 10000 || promo.offer.price >= 50000,
     any: promo.offer.price,
   }
   const housingPriceValue = document.querySelector('#housing-price').value;

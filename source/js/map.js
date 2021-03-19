@@ -82,7 +82,6 @@ let markers = L.layerGroup();
 let promosList;
 
 const createPin = (array) => {
-  //L.clearLayers();
   promosList = array;
   map.removeLayer(markers)
   markers.clearLayers()
