@@ -1,11 +1,14 @@
 import { sendData } from './api.js';
+import { previewAvatar } from './avatar.js';
 
+const MAX_ROOMS = 100;
+const MIN_GUESTS = 0;
 const checkin = document.querySelector('#timein');
 const checkout = document.querySelector('#timeout');
 const type = document.querySelector('#type');
 const price = document.querySelector('#price');
 const form = document.querySelector('.ad-form');
-const formElement = form.querySelectorAll('fieldset')
+const formFieldset = form.querySelectorAll('fieldset')
 const mapFilters = document.querySelector('.map__filters');
 const mapFilterSettings = mapFilters.querySelectorAll('.map__filter');
 const address = document.querySelector('#address');
@@ -41,6 +44,8 @@ const getDisabledFilter = (isDisabled) => {
   } else {
     mapFilters.classList.remove('map__filters--disabled');
   }
+  housingFeatures.disabled = isDisabled;
+
 
   mapFilterSettings.forEach((mapFilter) => {
     mapFilter.disabled = isDisabled
@@ -55,7 +60,7 @@ const getDisabledForm = (isDisabled) => {
     form.classList.remove('ad-form--disabled');
   }
 
-  formElement.forEach((fieldset) => {
+  formFieldset.forEach((fieldset) => {
     fieldset.disabled = isDisabled
   })
 }
@@ -87,11 +92,11 @@ let checkNumberOfGuestsAndRooms = () => {
   let roomsValue = Number(roomNumber.value);
   let guestsValue = Number(guests.value);
 
-  if (roomsValue !== 100 && guestsValue === 0) {
+  if (roomsValue !== MAX_ROOMS && guestsValue === MIN_GUESTS) {
     guests.setCustomValidity('Недостаточно гостей');
   } else if (roomsValue < guestsValue) {
     guests.setCustomValidity('Гостей слишком много')
-  } else if (roomsValue === 100 && guestsValue !== 0) {
+  } else if (roomsValue === MAX_ROOMS && guestsValue !== MIN_GUESTS) {
     guests.setCustomValidity('Данный вариант не для гостей')
   } else {
     guests.setCustomValidity('');
@@ -109,8 +114,8 @@ roomNumber.addEventListener('change', () => {
 
 
 
-
 const cleanForm = () => {
+  const photoHousing = document.querySelector('.ad-form__photo-img');
   descriptionInput.value = '';
   titleInput.value = '';
   checkin.value = '12:00';
@@ -130,31 +135,35 @@ const cleanForm = () => {
   allHousingFeatures.forEach((element) => {
     element.checked = false
   });
+  previewAvatar.src = 'img/muffin-grey.svg';
+  if (photoHousing !== null) {
+    photoHousing.remove()
+  }
 }
 
 // удаление попапа об Успешной форме
-const removeSuccessPopup = () => {
+const onSuccessPopupClick = () => {
   templateSuccess.remove();
-  onSuccessPopupClick();
+  closeErrorPopupClick();
 }
 
 // удаление слушателя на на Успешном Попапе
-const onSuccessPopupClick = () => {
-  templateSuccess.removeEventListener('click', removeSuccessPopup)
+const closeErrorPopupClick = () => {
+  templateSuccess.removeEventListener('click', onSuccessPopupClick)
 }
 
 // удаление попапа при нажатии на Esc
-const escKeyDownSuccess = (evt) => {
+const onSuccessPopupKeydown = (evt) => {
   if (evt.keyCode === 27) {
     evt.preventDefault()
     templateSuccess.remove();
-    onSuccessPopupKeydown();
+    closeErrorPopupKeydown();
   }
 }
 
 // удаление слушателя на Esc
-const onSuccessPopupKeydown = () => {
-  window.removeEventListener('keydown', escKeyDownSuccess)
+const closeErrorPopupKeydown = () => {
+  window.removeEventListener('keydown', onSuccessPopupKeydown)
 }
 
 // Добавление Попапа на экран при успешной отправке формы,
@@ -163,53 +172,46 @@ const successSubmit = (onSuccess) => {
   main.append(templateSuccess);
   onSuccess();
 
-  templateSuccess.addEventListener('click', removeSuccessPopup);
-  window.addEventListener('keydown', escKeyDownSuccess)
-}
-
-
-const removeErrorPopup = () => {
-  templateError.remove();
-  onErrorPopupclick()
+  templateSuccess.addEventListener('click', onSuccessPopupClick);
+  window.addEventListener('keydown', onSuccessPopupKeydown)
 }
 
 const onErrorPopupclick = () => {
-  templateError.removeEventListener('click', removeErrorPopup)
+  templateError.remove();
+  removeErrorPopupClick()
 }
-
-const escKeyDownError = (evt) => {
+const removeErrorPopupClick = () => {
+  templateError.removeEventListener('click', onErrorPopupclick)
+}
+const onErrorPopupKeydown = (evt) => {
   if (evt.keyCode === 27) {
     evt.preventDefault()
     templateError.remove();
-    onErrorPopupKeydown();
+    removeErrorPopupKeydown();
   }
 }
-
-const onErrorPopupKeydown = () => {
-  window.removeEventListener('keydown', escKeyDownError)
+const removeErrorPopupKeydown = () => {
+  window.removeEventListener('keydown', onErrorPopupKeydown)
 }
 
 
 
 let errorButton;
-
-const buttonOfErrorPopup = () => {
+const onErrorPopupButton = () => {
   templateError.remove();
-  onButtonErrorPopup()
+  removeErrorPopupButton()
 }
-
-const onButtonErrorPopup = () => {
-  errorButton.removeEventListener('click', buttonOfErrorPopup)
+const removeErrorPopupButton = () => {
+  errorButton.removeEventListener('click', onErrorPopupButton)
 }
 
 //Добавление затемнения при ошибке + слушатели для закрытия затемнения
 const errorSubmit = () => {
   main.append(templateError);
-
-  templateError.addEventListener('click', removeErrorPopup);
-  window.addEventListener('keydown', escKeyDownError);
+  templateError.addEventListener('click', onErrorPopupclick);
+  window.addEventListener('keydown', onErrorPopupKeydown);
   errorButton = document.querySelector('.error__button');
-  errorButton.addEventListener('click', buttonOfErrorPopup)
+  errorButton.addEventListener('click', onErrorPopupButton)
 }
 
 

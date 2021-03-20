@@ -13,7 +13,7 @@ const getData = (onSuccess, onError) => {
 
 const sendData = (onSuccessSubmit, onFail, body) => {
   fetch(
-    'https://22.javascript.pages.academy/keksobooking', {
+    'https://22.javascript.pages.academy/keksobooking1', {
       method: 'POST',
       body,
     },

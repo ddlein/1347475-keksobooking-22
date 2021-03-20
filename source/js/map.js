@@ -81,18 +81,18 @@ const cleanMap = () => {
 let markers = L.layerGroup();
 let promosList;
 
-const createPin = (array) => {
-  promosList = array;
+const createPin = (dataFromJson) => {
+  promosList = dataFromJson;
   map.removeLayer(markers)
   markers.clearLayers()
-  let newArr = array
+  let data = dataFromJson
     .filter(setFilterforType)
     .filter(setFilterForPrice)
     .filter(setFilterForRooms)
     .filter(setFilterForGuests)
     .filter(setFilterForFeatures)
     .slice(0, SIMILAR_PROMO_COUNT)
-  newArr
+  data
     .forEach((promo) => {
       const pinMarkerIcon = L.icon({
         iconUrl: PIN.icon,

@@ -58,3 +58,5 @@ fileChooserHousing.addEventListener('change', () => {
     showError('Картинки могут быть формата: .gif, .jpg, .jpeg, .png')
   }
 })
+
+export {previewAvatar}
