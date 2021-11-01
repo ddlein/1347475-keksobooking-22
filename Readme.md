@@ -7,7 +7,7 @@
 _Не удаляйте и не обращайте внимание на файлы и папки:_
 _`.editorconfig`, `.eslintrc`, `.gitattributes`, `.gitignore`, `package-lock.json`, `package.json`., `.github`_
 
----
+----
 
 ### Памятка
 
